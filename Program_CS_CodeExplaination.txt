@@ -1,0 +1,71 @@
+﻿ సారాంశం (Summary in Telugu)
+1️.WebApplication.CreateBuilder() → అప్లికేషన్ బిల్డర్ సృష్టిస్తుంది.
+2️. Services Registration (DI) → MVC & DB Context ను Dependency Injection (DI) container లో నమోదు చేస్తుంది.
+3️. Middleware Configuration → Static Files, Routing, Authorization, Error Handling సెటప్ చేస్తుంది.
+4️. Default Route Mapping → Home Controller లో Index Action Method ను డిఫాల్ట్‌గా సెట్ చేస్తుంది.
+5️. app.Run() → అప్లికేషన్‌ను ప్రారంభిస్తుంది.
+
+
+
+ఈ కోడ్ ASP.NET Core MVC అప్లికేషన్‌లో ప్రధాన ఎంట్రీ పాయింట్ (Main method) ను నిర్వచిస్తుంది. దీని అర్థాన్ని Step by Step 
+తెలుగులో వివరంగా చూద్దాం.
+
+public static void Main(string[] args)
+ఇది ప్రోగ్రామ్ execution ప్రారంభించే మెథడ్.
+args అనే పరామీటర్ కమాండ్ లైన్ arguments అందుకోవడానికి ఉపయోగిస్తారు.
+
+1️.WebApplication.Builder సృష్టించడం
+var builder = WebApplication.CreateBuilder(args);
+-->ఇది ASP.NET Core అప్లికేషన్‌ను నిర్మించడానికి అవసరమైన అన్ని సెటప్ (configuration) మరియు services ను అందిస్తుంది.
+
+2.Dependency Injection (Services)
+builder.Services.AddControllersWithViews();
+-->ఇది MVC (Model-View-Controller) pattern ఉపయోగించడానికి అవసరమైన services ను Dependency Injection (DI) container లో నమోదు చేస్తుంది.
+అంటే, Controller, View మరియు Model components పని చేయడానికి ఇది అవసరం.
+
+builder.Services.AddDbContext<TouristPlaceContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("tpcs"));
+});
+-->Entity Framework Core (EF Core) ను ఉపయోగించి SQL Server డేటాబేస్‌ కు కనెక్ట్ అవ్వడానికి ఈ కోడ్ ఉపయోగపడుతుంది.
+TouristPlaceContext అనే DB Context ను dependency injection ద్వారా నమోదు చేస్తుంది.
+tpcs అనేది appsettings.json ఫైల్ లోని డేటాబేస్ కనెక్షన్ స్ట్రింగ్.
+
+3.App Initialization (అప్లికేషన్ నిర్మించడం)
+  var app = builder.Build();
+--->builder.Build(); అనేది మొత్తం అప్లికేషన్‌ను నిర్మిస్తుంది.
+
+4.HTTP Request Pipeline Configuration
+  if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+}
+---->Development mode కాకపోతే (Production లేదా Staging లో) Error Handling Middleware ను ఉపయోగిస్తుంది.
+Error వచ్చినప్పుడు Home/Error పేజీకి రీడైరెక్ట్ చేస్తుంది.
+
+5.Static Files Middleware
+   app.UseStaticFiles();
+---->CSS, JavaScript, Images వంటి Static Files ను సర్వ్ చేయడానికి ఉపయోగిస్తారు.
+
+6.Routing Middleware
+  app.UseRouting();
+--->Routing Middleware అప్లికేషన్‌లో request handling ఎలా జరగాలో నిర్ణయిస్తుంది.
+
+7.Authorization Middleware
+  app.UseAuthorization();
+User authentication & authorization కోసం ఉపయోగిస్తారు.
+
+8.Define Default Route (మూల మార్గాన్ని నిర్వచించడం)
+ app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+ ----------->ఇది డిఫాల్ట్ రూట్ (Default Route) ను సెటప్ చేస్తుంది.
+అంటే, URL లో ఏదైనా స్పష్టమైన మార్గం ఇవ్వకపోతే,
+Home Controller లో Index Action Method ను రన్ చేస్తుంది.
+https://localhost:5001/  → HomeController.Index()
+
+9. Run the Application
+    app.Run();
+ఇది ASP.NET Core అప్లికేషన్‌ను ప్రారంభిస్తుంది.
+
+ 

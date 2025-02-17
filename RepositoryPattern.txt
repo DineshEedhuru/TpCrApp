@@ -1,0 +1,66 @@
+﻿1.Repository Pattern అంటే ఏమిటి?
+A.Repository Pattern అనేది Data Access Layer (DAL) ను మెరుగుపరచడానికి ఉపయోగించే Design Pattern.
+ఇది Direct Database Calls చేయకుండా, మధ్యలో ఒక Layer ను ఉపయోగించి Data Fetching & Storage నిర్వహిస్తుంది.
+
+Repository Pattern యొక్క ఉద్దేశ్యం (Purpose)?
+✅ Data Access Logic & Business Logic ని విడదీయడం.
+✅ Code Reusability & Maintainability పెంచడం.
+✅ Unit Testing & Dependency Injection ను సులభంగా చేయడం.
+✅ Different Data Sources (SQL, NoSQL, APIs) Support చేయడం.
+
+Repository Pattern ఎందుకు ఉపయోగిస్తాం?
+🚀 Direct DB Calls చేయకుండా, Clean Architecture అందించేందుకు.
+🚀 Code Structure ని Organized & Readable గా ఉంచేందుకు.
+🚀 Easier Unit Testing & Loose Coupling కోసం.
+
+Repository Pattern Example (ASP.NET Core MVC)
+1.Create Repository Interface
+public interface IEmployeeRepository  
+{
+    IEnumerable<Employee> GetAllEmployees();
+    Employee GetEmployeeById(int id);
+    void AddEmployee(Employee employee);
+    void UpdateEmployee(Employee employee);
+    void DeleteEmployee(int id);
+}
+
+2.Implement Repository
+public class EmployeeRepository : IEmployeeRepository  
+{
+    private readonly AppDbContext _context;
+
+    public EmployeeRepository(AppDbContext context)  
+    {
+        _context = context;
+    }
+
+    public IEnumerable<Employee> GetAllEmployees() => _context.Employees.ToList();
+    public Employee GetEmployeeById(int id) => _context.Employees.Find(id);
+    public void AddEmployee(Employee employee) { _context.Employees.Add(employee); _context.SaveChanges(); }
+    public void UpdateEmployee(Employee employee) { _context.Employees.Update(employee); _context.SaveChanges(); }
+    public void DeleteEmployee(int id) { var emp = _context.Employees.Find(id); _context.Employees.Remove(emp); _context.SaveChanges(); }
+}
+
+3.Register Repository in Program.cs
+
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+4.Use in Controller
+
+public class EmployeeController : Controller
+{
+    private readonly IEmployeeRepository _employeeRepository;
+
+    public EmployeeController(IEmployeeRepository employeeRepository)
+    {
+        _employeeRepository = employeeRepository;
+    }
+
+    public IActionResult Index() => View(_employeeRepository.GetAllEmployees());
+}
+
+సంక్షిప్తంగా:
+ Repository Pattern అనేది Data Access ను Business Logic నుండి విడదీయడానికి ఉపయోగించే Design Pattern.
+✅ Code Clean, Maintainable & Testable గా ఉంచుతుంది.
+✅ Direct DB Calls తగ్గించడానికి & Loose Coupling కోసం ఉపయోగిస్తారు.
+

@@ -1,0 +1,66 @@
+﻿Data Access Layer (DAL) అంటే ఏమిటి?
+Data Access Layer (DAL) అనేది ASP.NET MVC లో Database తో సంబంధం కలిగిన Operations 
+(CRUD - Create, Read, Update, Delete) నిర్వహించడానికి ఉపయోగించే Layer.
+
+👉 ఇది Database & Business Logic మధ్య మధ్యవర్తి (Middle Layer) లాగా పనిచేస్తుంది.
+👉 SQL Queries, Stored Procedures, ORM (Entity Framework, ADO.NET) ద్వారా Data Fetch చేయడానికి ఉపయోగిస్తారు.
+
+Data Access Layer యొక్క ఉద్దేశ్యం (Purpose)?
+✅ Business Logic & Data Logic ని విడదీయడం.
+✅ Code Reusability & Maintainability పెంచడం.
+✅ Direct SQL Queries రాయకుండా ORM ద్వారా Data Handle చేయడం.
+✅ Different Data Sources (SQL Server, MySQL, APIs) ను Support చేయడం.
+
+ Data Access Layer ఎందుకు ఉపయోగిస్తారు?
+🚀 Database Access & Business Logic ని విడదీయడానికి.
+🚀 Code Clean & Organized గా ఉంచేందుకు.
+🚀 Security & Performance మెరుగుపరచడానికి.
+
+Data Access Layer (DAL) Example in ASP.NET MVC using ADO.NET
+
+1.Create Data Access Layer (DAL)
+
+public class EmployeeDAL  
+{
+    private readonly string connectionString = "Your_Connection_String";
+
+    public List<Employee> GetAllEmployees()  
+    {
+        List<Employee> employees = new List<Employee>();
+        using (SqlConnection con = new SqlConnection(connectionString))  
+        {
+            SqlCommand cmd = new SqlCommand("SELECT * FROM Employees", con);
+            con.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())  
+            {
+                employees.Add(new Employee  
+                {
+                    EmployeeID = Convert.ToInt32(rdr["EmployeeID"]),
+                    Name = rdr["Name"].ToString(),
+                    Age = Convert.ToInt32(rdr["Age"])
+                });
+            }
+        }
+        return employees;
+    }
+}
+
+
+2.Use DAL in Controller
+ 
+ public class EmployeeController : Controller  
+{
+    private readonly EmployeeDAL _employeeDAL = new EmployeeDAL();
+
+    public IActionResult Index()  
+    {
+        var employees = _employeeDAL.GetAllEmployees();
+        return View(employees);
+    }
+}
+
+సంక్షిప్తంగా:
+✅ Data Access Layer (DAL) అనేది Database నుండి Data Fetch చేయడానికి ప్రత్యేకంగా ఉండే Layer.
+✅ Business Logic & Database Access Logic ని విడదీయడం కోసం ఉపయోగిస్తారు.
+✅ Code Clean, Secure & Maintainable గా ఉంచడానికి ఉపయోగిస్తారు.

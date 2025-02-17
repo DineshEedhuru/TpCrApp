@@ -1,0 +1,73 @@
+﻿ 1.what is dbcontext in Asp.net core explain indepth
+ 
+ A.DbContext is the central class in ASP.NET Core's Entity Framework Core that 
+ manages database operations and acts as a bridge between your application's 
+ domain classes and the database 
+ 
+. It handles all database-related tasks while providing powerful features 
+for data manipulation and management.
+ 
+ 
+ https://www.phind.com/search/cm77xkepa0000356rjdantu7s 
+ 
+  
+ 
+ 
+ DbContext అంటే ఏమిటి? దాని ఉద్దేశ్యం ఏమిటి? ASP.NET Core లో దీన్ని ఎందుకు ఉపయోగిస్తాము?
+🔹 DbContext అంటే ఏమిటి?
+👉 DbContext అనేది Entity Framework Core (EF Core) లోని ఒక ముఖ్యమైన క్లాస్.
+👉 ఇది Databases & C# Objects మధ్య సంబంధాన్ని నిర్వహించడానికి (ORM - Object Relational Mapper) ఉపయోగిస్తారు.
+👉 దీని ద్వారా Tables, Data, Queries, Transactions నిర్వహించవచ్చు.
+
+
+DbContext యొక్క ముఖ్యమైన లక్షణాలు
+✅ 1️. Database కి కనెక్షన్ నిర్వహించడం
+✅ 2️. Tables ని Represent చేయడం (DbSet<T>)
+✅ 3️. Queries నిర్వహించడం (LINQ తో Data Fetching)
+✅ 4️. CRUD Operations (Insert, Update, Delete, Select) చేయడం
+✅ 5️. Transactions మరియు Migrations నిర్వహించడం
+
+ DbContext క్లాస్ ఎలా ఉపయోగించాలి?
+  Step 1: Create a DbContext Class
+  using Microsoft.EntityFrameworkCore;
+
+public class TouristPlaceContext : DbContext  
+{
+    public TouristPlaceContext(DbContextOptions<TouristPlaceContext> options) : base(options)  
+    {  
+    }  
+
+    // Representing a Table in Database
+    public DbSet<TouristPlace> TouristPlaces { get; set; }  
+}
+
+ఇక్కడ TouristPlaces అనేది Database లోని Table ను Represent చేస్తుంది.
+
+Step 2: Registering in Dependency Injection (DI)
+
+builder.Services.AddDbContext<TouristPlaceContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("tpcs"));
+});
+
+ఇది appsettings.json ఫైల్ లోని Connection String ను ఉపయోగించి DB కి కనెక్ట్ అవుతుంది.
+
+Step 3: Performing CRUD Operations
+
+using (var context = new TouristPlaceContext())
+{
+    var place = new TouristPlace { Name = "Taj Mahal", Location = "Agra" };
+    context.TouristPlaces.Add(place);
+    context.SaveChanges();
+}
+
+
+ Retrieve Data
+ var places = context.TouristPlaces.ToList();
+
+ DbContext ఎందుకు ఉపయోగిస్తాము?
+✅ 1️  Direct SQL Queries రాయాల్సిన అవసరం లేదు
+✅ 2️ C# Objects ను Databases లో Store చేయొచ్చు
+✅ 3️ Security మరియు Performance మెరుగ్గా ఉంటుంది
+✅ 4️ Transactions మరియు Migrations నిర్వహించడానికి సులభంగా ఉంటుంది
+✅ 5️ Unit Testing కోసం కూడా ఉపయోగించవచ్చు

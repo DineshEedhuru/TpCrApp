@@ -1,0 +1,46 @@
+﻿Migrations అంటే ఏమిటి?
+Migration అనేది ASP.NET Core Entity Framework (EF) Core లో 
+Database Schema Changes (Tables, Columns Add/Modify) ను Data Loss లేకుండా Update చేయడానికి ఉపయోగిస్తారు.
+
+
+Migrations యొక్క ఉద్దేశ్యం (Purpose)?
+✅ C# Models & Database Schema ని Sync చేయడానికి.
+✅ Manual SQL Queries లేకుండా Schema Changes చేయడానికి.
+✅ Tables, Columns Add/Modify/Delete సులభంగా చేయడానికి.
+✅ Database Versioning & History Track చేయడానికి.
+
+Migrations ఎందుకు ఉపయోగిస్తాము?
+🚀 Schema Changes ని Data Loss లేకుండా చేయడానికి.
+🚀 Multiple Environments (Dev, Test, Prod) లో Consistency కోసం.
+🚀 Team Development లో Database Structure ని Sync చేయడానికి.
+
+ముఖ్యమైన Migration Commands
+
+# 1️.కొత్త Migration Create చేయడం
+dotnet ef migrations add InitialCreate 
+
+# 2️.Database కి Apply చేయడం
+dotnet ef database update 
+
+# 3️.చివరి Migration Remove చేయడం
+dotnet ef migrations remove
+
+
+
+-------------------------------------------------------------------------------------------------
+----Database Schema అంటే ఏమిటి?
+Database Schema అనేది Database యొక్క संरచన (Structure) ను నిర్వచించే రూపం.
+👉 ఇది Tables, Columns, Data Types, Constraints, Relationships ను నిర్వచిస్తుంది.
+👉 ఎలా Data Store చేయాలి, ఎలా నిర్వహించాలి అనే విషయాలను Schema ద్వారా నిర్వచిస్తారు.
+
+ఉదాహరణ:
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Age INT,
+    DepartmentID INT FOREIGN KEY REFERENCES Departments(DepartmentID)
+);
+
+ఇక్కడ, Employees అనే Table కి Schema Create చేశాం.
+
+✅ Schema అనేది Database యొక్క నిర్మాణ రూపం. 
