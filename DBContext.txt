@@ -71,3 +71,4 @@ using (var context = new TouristPlaceContext())
 ✅ 3️ Security మరియు Performance మెరుగ్గా ఉంటుంది
 ✅ 4️ Transactions మరియు Migrations నిర్వహించడానికి సులభంగా ఉంటుంది
 ✅ 5️ Unit Testing కోసం కూడా ఉపయోగించవచ్చు
+6: welcome to core.
