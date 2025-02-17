@@ -72,3 +72,5 @@ using (var context = new TouristPlaceContext())
 ✅ 4️ Transactions మరియు Migrations నిర్వహించడానికి సులభంగా ఉంటుంది
 ✅ 5️ Unit Testing కోసం కూడా ఉపయోగించవచ్చు
 6: welcome to core.
+
+7.This ia Asp.net Core Project and iam adding a new line
